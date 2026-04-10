@@ -1,6 +1,5 @@
 from pydantic import BaseModel
 
-
 class UsuarioLogin(BaseModel):
     email : str
     contraseña : str
@@ -24,7 +23,8 @@ class UsuarioResponse(BaseModel):
 class posteoCreate(BaseModel):
     title : str
     contenido : str
-   
+    
+
     
 class posteoResponse(BaseModel):
     id : int
