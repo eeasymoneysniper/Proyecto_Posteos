@@ -8,7 +8,7 @@ from typing import Annotated
 
 router = APIRouter()
 
-@router.post("/usuarios/",response_model=UsuarioCreate)
+@router.post("/usuarios/",response_model=UsuarioResponse)
 async def create_usuario(usuario: UsuarioCreate,db: Annotated[Session,Depends(get_db)]):
     db_usuario = db.query(Usuarios).filter(Usuarios.email == usuario.email).first()
     if db_usuario:
@@ -29,9 +29,9 @@ async def login_usuario(usuario:UsuarioLogin,db : Annotated[Session,Depends(get_
     return usuario
 
 
-@router.get("usuarios/get/{user_id}",response_model=UsuarioResponse)
-async def get_user(usuario : UsuarioResponse,db : Annotated[Session,Depends(get_db)]):
-    db_user = db.query(Usuarios).filter(Usuarios.email == usuario.email).first()
+@router.get("/usuarios/get/{user_id}",response_model=UsuarioResponse)
+async def get_user(user_id : int,db : Annotated[Session,Depends(get_db)]):
+    db_user = db.query(Usuarios).filter(Usuarios.user_id == user_id).first()
     if not db_user:
         raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="Usuario no encontrado")
     return db_user

@@ -1,5 +1,5 @@
 from sqlalchemy import Column,Integer,String,ForeignKey,DateTime
-from database import Base
+from app_posteos.database import Base
 from datetime import datetime,timezone
 
 
