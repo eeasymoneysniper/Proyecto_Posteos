@@ -7,10 +7,10 @@ class Posteos(Base):
     __tablename__ = "posteos"
     
     post_id = Column(Integer,primary_key=True,index=True)
-    title = Column(String(60))
+    title = Column(String(60),nullable=False)
     contenido = Column(String(500))
     created_at = Column(DateTime,default=datetime.now(timezone.utc))
-    user_id = Column(Integer,ForeignKey("usuarios.user_id"))
+    user_id = Column(Integer,ForeignKey("usuarios.user_id"),nullable=False)
     
     
     
