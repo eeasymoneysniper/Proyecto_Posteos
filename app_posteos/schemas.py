@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from datetime import datetime,timezone
 
 class UsuarioLogin(BaseModel):
     email : str
@@ -30,8 +31,8 @@ class posteoResponse(BaseModel):
     post_id : int
     title : str
     contenido : str
-    created_at : str
-    user_id : int
+    created_at : datetime=datetime.now(timezone.utc)
+    user_id : int 
     
     class Config:
         from_attributes = True
