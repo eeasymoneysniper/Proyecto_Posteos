@@ -6,7 +6,7 @@ from datetime import datetime,timezone
 class Posteos(Base):
     __tablename__ = "posteos"
     
-    id = Column(Integer,primary_key=True,index=True)
+    post_id = Column(Integer,primary_key=True,index=True)
     title = Column(String(60))
     contenido = Column(String(500))
     created_at = Column(DateTime,default=datetime.now(timezone.utc))
