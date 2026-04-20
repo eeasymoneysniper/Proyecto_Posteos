@@ -27,7 +27,7 @@ class posteoCreate(BaseModel):
 
     
 class posteoResponse(BaseModel):
-    id : int
+    post_id : int
     title : str
     contenido : str
     created_at : str
