@@ -20,17 +20,14 @@ async def create_posteo(posteo : posteoCreate,user_id : int ,db : Annotated[Sess
     db.refresh(nuevo_posteo)
     return nuevo_posteo
 
-@router.get("/posteos/all",response_model=list[posteoResponse])
+@router.get("/posteos/",response_model=list[posteoResponse])
 async def get_posteos(db : Annotated[Session,Depends(get_db)]):
     return db.query(Posteos).all()
 
-@router.get("/posteos/{user_id}",response_model=posteoResponse)
+@router.get("/usuarios/{user_id}/posteos",response_model=list[posteoResponse])
 async def get_posteo(user_id : int,db : Annotated[Session,Depends(get_db)]):
-    usuario = db.query(Usuarios).filter(Usuarios.user_id == user_id).first()
-    if not usuario:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="usuario no Encontrado")
-    posteo = db.query(Posteos).filter(Posteos.user_id == user_id).first()
+    posteo = db.query(Posteos).filter(Posteos.user_id == user_id).all()
     if not posteo:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="Posteo no Encontrado")
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="No tiene Posteos registrados")
     return posteo
    

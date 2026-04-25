@@ -1,6 +1,7 @@
-from sqlalchemy import Column,Integer,String,ForeignKey,DateTime
+from sqlalchemy import Column,Integer,String,ForeignKey,DateTime,func
 from app_posteos.database import Base
 from datetime import datetime,timezone
+from sqlalchemy.sql import func
 
 
 class Posteos(Base):
@@ -9,7 +10,7 @@ class Posteos(Base):
     post_id = Column(Integer,primary_key=True,index=True)
     title = Column(String(60),nullable=False)
     contenido = Column(String(500))
-    created_at = Column(DateTime,default=datetime.now(timezone.utc))
+    created_at = Column(DateTime,server_default=func.now())
     user_id = Column(Integer,ForeignKey("usuarios.user_id"),nullable=False)
     
     
