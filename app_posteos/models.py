@@ -1,6 +1,5 @@
 from sqlalchemy import Column,Integer,String,ForeignKey,DateTime,func
 from app_posteos.database import Base
-from datetime import datetime,timezone
 from sqlalchemy.sql import func
 
 
