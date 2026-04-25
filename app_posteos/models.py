@@ -19,5 +19,5 @@ class Usuarios(Base):
     
     user_id = Column(Integer,primary_key=True,index=True)
     nombre = Column(String(40))
-    email = Column(String(100))
+    email = Column(String(100),unique=True)
     contraseña = Column(String(120))
