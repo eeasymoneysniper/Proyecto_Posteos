@@ -4,17 +4,14 @@ from app_posteos.database import get_db
 from app_posteos.models import Posteos,Usuarios
 from app_posteos.schemas import posteoCreate,posteoResponse
 from typing import Annotated
+from app_posteos.routers.usuarios import get_current_user
 
 router = APIRouter()    
 
 @router.post("/posteos/",response_model=posteoResponse)
-async def create_posteo(posteo : posteoCreate,user_id : int ,db : Annotated[Session,Depends(get_db)]):
+async def create_posteo(posteo : posteoCreate,db : Annotated[Session,Depends(get_db)],current_user : Annotated[Usuarios,Depends(get_current_user)]):
     
-    user = db.query(Usuarios).filter(Usuarios.user_id == user_id).first()
-
-    if not user:
-        raise HTTPException(status_code=404, detail="Usuario no existe")
-    nuevo_posteo = Posteos(title=posteo.title,contenido=posteo.contenido,user_id=user_id)
+    nuevo_posteo = Posteos(title=posteo.title,contenido=posteo.contenido,user_id=current_user.user_id)
     db.add(nuevo_posteo)
     db.commit()
     db.refresh(nuevo_posteo)
