@@ -37,3 +37,10 @@ class posteoResponse(BaseModel):
     class Config:
         from_attributes = True
 
+
+class posteoPut(BaseModel):
+    title : str
+    contenido : str
+    
+class posteoDelete(BaseModel):
+    post_id : int
