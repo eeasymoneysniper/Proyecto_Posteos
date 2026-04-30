@@ -50,7 +50,7 @@ async def get_user(user_id : int,db : Annotated[Session,Depends(get_db)]):
     return db_user
 
 def create_access_token(data: dict):
-    expire = datetime.now(timezone.utc) + timedelta(minutes=EXPIRACION)
+    expire = datetime.now(timezone.utc) + timedelta(hours=EXPIRACION)
     data["exp"] = expire
     encoded_jwt = jwt.encode(data, CLAVE, algorithm=ALGORITMO)
     
