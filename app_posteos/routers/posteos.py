@@ -44,3 +44,14 @@ async def update_posteo(post_id : int,posteo : posteoPut,db : Annotated[Session,
     return db_posteo
 
 @router.delete("/posteos/{post_id}")
+async def delete_posteo(post_id : int,db : Annotated[Session,Depends(get_db)],current_user : Annotated[Usuarios,Depends(get_current_user)]):
+    db_posteo=db.query(Posteos).filter(Posteos.post_id == post_id).first()
+    if not db_posteo:
+        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND,detail="Posteo no encontrado")
+    
+    if db_posteo.user_id != current_user.user_id:
+        raise HTTPException(status_code=status.HTTP_403_FORBIDDEN,detail="No tienes permiso para eliminar este posteo")
+    
+    db.delete(db_posteo)
+    db.commit()
+    return {"detail":"Posteo eliminado exitosamente"}
