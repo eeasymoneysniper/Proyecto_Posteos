@@ -8,14 +8,17 @@ import jwt
 from datetime import datetime,timezone,timedelta
 from pwdlib import PasswordHash
 from fastapi.security import OAuth2PasswordBearer,OAuth2PasswordRequestForm
+from dotenv import load_dotenv
+import os
 
 oauth2=OAuth2PasswordBearer(tokenUrl="/usuarios/login")
 
 router = APIRouter()
 
+load_dotenv()
 
-CLAVE = "clave_secreta_para_jwt"
-ALGORITMO = "HS256"
+CLAVE = os.getenv("CLAVE")
+ALGORITMO = os.getenv("ALGORITMO")
 EXPIRACION = 1
 
 password_hash = PasswordHash.recommended()
