@@ -10,7 +10,11 @@ class UsuarioCreate(BaseModel):
     nombre : str
     email : str
     contraseña : str
-    
+
+class UsuarioUpdate(BaseModel):
+    nombre: str | None = None
+    email: str | None = None
+    contraseña: str | None = None
     
 class UsuarioResponse(BaseModel):
     user_id : int
