@@ -2,7 +2,7 @@ from fastapi import APIRouter,Depends,HTTPException,status
 from sqlalchemy.orm import Session
 from app_posteos.database import get_db
 from app_posteos.models import Usuarios
-from app_posteos.schemas import UsuarioCreate,UsuarioResponse,UsuarioLogin
+from app_posteos.schemas import UsuarioCreate,UsuarioResponse,UsuarioUpdate
 from typing import Annotated
 import jwt
 from datetime import datetime,timezone,timedelta
@@ -10,6 +10,7 @@ from pwdlib import PasswordHash
 from fastapi.security import OAuth2PasswordBearer,OAuth2PasswordRequestForm
 from dotenv import load_dotenv
 import os
+
 
 oauth2=OAuth2PasswordBearer(tokenUrl="/usuarios/login")
 
@@ -22,6 +23,8 @@ ALGORITMO = os.getenv("ALGORITMO")
 EXPIRACION = 1
 
 password_hash = PasswordHash.recommended()
+
+
 
 
 @router.post("/usuarios/",response_model=UsuarioResponse)
@@ -79,3 +82,28 @@ def get_current_user(token: Annotated[str,Depends(oauth2)],db: Annotated[Session
     if user is None:
         raise exception
     return user
+
+@router.get("/usuarios/me",response_model=UsuarioResponse)
+async def get_user(current_user : Annotated[Usuarios,Depends(get_current_user)]):
+    return current_user
+
+@router.put("/usuarios/me",response_model=UsuarioResponse)
+async def update_user(usuarios:UsuarioUpdate,db:Annotated[Session,Depends(get_db)],current_user : Annotated[Usuarios,Depends(get_current_user)]):
+    if usuarios.nombre:
+      current_user.nombre = usuarios.nombre
+    if usuarios.email:
+        current_user.email = usuarios.email
+    if usuarios.contraseña:
+        current_user.contraseña = get_password_hashed(usuarios.contraseña)
+   
+    db.commit()
+    db.refresh(current_user)
+    return current_user
+
+
+@router.delete("/usuarios/me")
+async def delete_user(db:Annotated[Session,Depends(get_db)],current_user : Annotated[Usuarios,Depends(get_current_user)]):
+    db.delete(current_user)
+    db.commit()
+    return {"detail":"Usuario eliminado exitosamente"}
+   
