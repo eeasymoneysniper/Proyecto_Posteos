@@ -18,8 +18,8 @@ async def create_posteo(posteo : posteoCreate,db : Annotated[Session,Depends(get
     return nuevo_posteo
 
 @router.get("/posteos/",response_model=list[posteoResponse])
-async def get_posteos(db : Annotated[Session,Depends(get_db)]):
-    return db.query(Posteos).all()
+async def get_posteos(db : Annotated[Session,Depends(get_db)],skip=1,limit=1):
+    return db.query(Posteos).offset(skip).limit(limit).all()
 
 @router.get("/usuarios/{user_id}/posteos",response_model=list[posteoResponse])
 async def get_posteo(user_id : int,db : Annotated[Session,Depends(get_db)]):
