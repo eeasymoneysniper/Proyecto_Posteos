@@ -16,7 +16,7 @@ router = APIRouter()
 oauth2=OAuth2PasswordBearer(tokenUrl="/login")
 CLAVE = os.getenv("CLAVE")
 ALGORITMO = os.getenv("ALGORITMO")
-ACCESS_TOKEN_EXPIRE_MINUTES = 3
+ACCESS_TOKEN_EXPIRE_MINUTES = 15
 
 
 
